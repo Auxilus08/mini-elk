@@ -72,7 +72,7 @@ services:
       ELASTICSEARCH_URL: http://elasticsearch:9200
     volumes:
       - ./sim_profiles.yaml:/app/sim_profiles.yaml:ro
-      - shared-state:/shared
+      - ./shared-state:/shared
     restart: unless-stopped
 
   auth-service:
@@ -87,7 +87,7 @@ services:
       SERVICE_NAME: auth-service
     volumes:
       - ./sim_profiles.yaml:/app/sim_profiles.yaml:ro
-      - shared-state:/shared
+      - ./shared-state:/shared
     restart: unless-stopped
 
   api-gateway:
@@ -102,7 +102,7 @@ services:
       SERVICE_NAME: api-gateway
     volumes:
       - ./sim_profiles.yaml:/app/sim_profiles.yaml:ro
-      - shared-state:/shared
+      - ./shared-state:/shared
     restart: unless-stopped
 
   worker-service:
@@ -117,7 +117,7 @@ services:
       SERVICE_NAME: worker-service
     volumes:
       - ./sim_profiles.yaml:/app/sim_profiles.yaml:ro
-      - shared-state:/shared
+      - ./shared-state:/shared
     restart: unless-stopped
 
   search-api:
@@ -148,4 +148,4 @@ services:
 
 volumes:
   es-data:
-  shared-state:
+

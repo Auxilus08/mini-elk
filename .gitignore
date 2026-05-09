@@ -42,6 +42,10 @@ Thumbs.db
 *.log
 *.pid
 
+# Scenario state shared between load_generator and services (bind mount).
+shared-state/*
+!shared-state/.gitkeep
+
 # ---------- OS ----------
 .DS_Store
 Desktop.ini

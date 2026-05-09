@@ -122,13 +122,14 @@ services:
 
   search-api:
     build:
-      context: .
-      dockerfile: search-api/Dockerfile
+      context: ./search-api
+      dockerfile: Dockerfile
     depends_on:
       elasticsearch:
         condition: service_healthy
     environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
+      SEARCH_API_ES_HOST: http://elasticsearch:9200
+      SEARCH_API_LOG_LEVEL: INFO
       PYTHONUNBUFFERED: "1"
     ports:
       - "8000:8000"

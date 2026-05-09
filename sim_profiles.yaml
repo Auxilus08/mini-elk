@@ -1,0 +1,49 @@
+profiles:
+  auth-service:
+    baseline_error_rate: 0.02
+    spike_error_rate: 0.15
+    spike_duration_s: 120
+    traffic_rps: 50
+    latency_baseline_ms: 45
+    latency_spike_ms: 800
+
+  api-gateway:
+    baseline_error_rate: 0.01
+    spike_error_rate: 0.08
+    spike_duration_s: 60
+    traffic_rps: 200
+    latency_baseline_ms: 20
+    latency_spike_ms: 400
+
+  worker-service:
+    baseline_error_rate: 0.05
+    spike_error_rate: 0.45
+    spike_duration_s: 90
+    traffic_rps: 20
+    latency_baseline_ms: 150
+    latency_spike_ms: 2500
+    silence_duration_s: 60
+
+scenarios:
+  normal:
+    active_profile: baseline
+  spike:
+    service: auth-service
+    inject: error_spike
+  storm:
+    service: api-gateway
+    inject: retry_storm
+    rps_multiplier: 5
+  silence:
+    service: worker-service
+    inject: silence
+  chaos:
+    services: all
+    inject: random
+    duration_s: 300
+
+# Shared runtime config consumed by services + load_generator.
+runtime:
+  scenario_state_file: /shared/scenario.json
+  default_scenario: normal
+  kafka_topic: logs.raw

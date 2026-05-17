@@ -1,0 +1,166 @@
+.app {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+
+/* =========================================================================
+   TOP BAR — tmux/vim modeline aesthetic. This is the "real tool" signature.
+   ========================================================================= */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  padding: 0 14px;
+  background: var(--bg-base);
+  border-bottom: 1px solid var(--hairline-strong);
+  font-size: 0.72rem;
+  color: var(--fg-secondary);
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 10;
+}
+
+.topbar::before {
+  /* A 1px coloured rule just under the bar — like a status-strip accent. */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--info) 30%,
+    var(--info) 70%,
+    transparent
+  );
+  opacity: 0.18;
+}
+
+.topbar-left,
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---- brand ---- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brand-mark {
+  color: var(--healthy);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.brand-name {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--fg-primary);
+}
+
+.topbar-sep {
+  color: var(--fg-dim);
+  user-select: none;
+}
+
+.topbar-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.topbar-item .uplabel {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--fg-dim);
+}
+
+.topbar-value {
+  color: var(--fg-primary);
+  font-weight: 500;
+}
+
+/* cluster status colours */
+.topbar-item.cluster-green .topbar-value { color: var(--healthy); }
+.topbar-item.cluster-yellow .topbar-value { color: var(--warning); }
+.topbar-item.cluster-red .topbar-value,
+.topbar-item.cluster-unknown .topbar-value { color: var(--critical); }
+
+.topbar-item.system-ok .topbar-value { color: var(--healthy); }
+.topbar-item.system-degraded .topbar-value { color: var(--warning); }
+
+/* ---- right side ---- */
+.topbar-connection {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.topbar-connection-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--healthy);
+  box-shadow: 0 0 6px -1px var(--healthy);
+}
+
+.topbar-connection.is-stale .topbar-connection-dot {
+  background: var(--warning);
+  box-shadow: none;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.topbar-connection.is-live .uplabel {
+  color: var(--healthy);
+}
+
+.topbar-connection.is-stale .uplabel {
+  color: var(--warning);
+}
+
+.topbar-clock {
+  color: var(--fg-primary);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================================
+   MAIN GRID
+   ========================================================================= */
+
+.main-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 380px) 1fr;
+  gap: 14px;
+  padding: 14px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.col-left,
+.col-right {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stack on narrow viewports — collapses to AnomalyFeed-first. */
+@media (max-width: 880px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .col-left {
+    max-height: 280px;
+  }
+}

@@ -139,10 +139,15 @@ services:
     build:
       context: ./dashboard
       dockerfile: Dockerfile
+      args:
+        # Vite bakes these into the static bundle at build time. The browser
+        # loads from the host, so the API URL must be the host-exposed port
+        # (not the docker-network DNS name).
+        VITE_API_BASE_URL: http://localhost:8000
+        VITE_TRANSPORT: poll
+        VITE_POLL_INTERVAL_MS: "5000"
     depends_on:
       - search-api
-    environment:
-      VITE_API_BASE_URL: http://localhost:8000
     ports:
       - "3000:3000"
     restart: unless-stopped

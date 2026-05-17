@@ -1,0 +1,188 @@
+/* =========================================================================
+   mini-elk — design tokens + reset
+   Aesthetic: NORAD console / trading-terminal. Operator-grade.
+   ========================================================================= */
+
+:root {
+  /* ---- type stacks ---- */
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo,
+    Consolas, monospace;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ---- surfaces (deep blue-black, warmer than OLED) ---- */
+  --bg-base: #0B0E14;
+  --bg-elev-1: #11161F;
+  --bg-elev-2: #171D28;
+  --bg-elev-3: #1D2532;
+
+  /* ---- text ---- */
+  --fg-primary: #E5E7EB;
+  --fg-secondary: #9CA3AF;
+  --fg-muted: #6B7280;
+  --fg-dim: #4B5563;
+
+  /* ---- structural lines ---- */
+  --hairline: #1F2937;
+  --hairline-strong: #2A3444;
+
+  /* ---- semantic colors ---- */
+  --critical: #FF4747;
+  --critical-soft: rgba(255, 71, 71, 0.12);
+  --critical-rule: rgba(255, 71, 71, 0.35);
+
+  --warning: #FFB020;
+  --warning-soft: rgba(255, 176, 32, 0.12);
+  --warning-rule: rgba(255, 176, 32, 0.32);
+
+  --healthy: #3DD68C;
+  --healthy-soft: rgba(61, 214, 140, 0.12);
+  --healthy-rule: rgba(61, 214, 140, 0.32);
+
+  --info: #5EA1FF;
+  --info-soft: rgba(94, 161, 255, 0.12);
+
+  --trace-bg: #1B2D2A;
+  --trace-fg: #6EE7B7;
+
+  /* ---- level colors (slightly distinct from severity) ---- */
+  --level-error: #FF4747;
+  --level-warn: #FFB020;
+  --level-info: #5EA1FF;
+  --level-debug: #6B7280;
+  --level-critical: #FF6B9D;
+
+  /* ---- shadows / depth ---- */
+  --shadow-soft: 0 0 0 1px var(--hairline) inset;
+  --shadow-deep: 0 24px 80px -16px rgba(0, 0, 0, 0.6),
+    0 0 0 1px var(--hairline-strong);
+
+  /* ---- timing ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =========================================================================
+   Reset
+   ========================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--fg-primary);
+  background: var(--bg-base);
+  /* Subtle grain to give the void a texture — operator screens have noise. */
+  background-image:
+    radial-gradient(at 30% 0%, rgba(94, 161, 255, 0.04), transparent 50%),
+    radial-gradient(at 70% 100%, rgba(255, 71, 71, 0.03), transparent 50%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-variant-ligatures: contextual;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Tabular numerals everywhere data appears — single biggest "real tool" tell. */
+.mono,
+code,
+kbd,
+.tabnum {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* All-caps cartographic micro labels. */
+.uplabel {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  font-weight: 500;
+}
+
+/* =========================================================================
+   Scrollbars — subtle, not OS-default chunky
+   ========================================================================= */
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--bg-elev-3);
+  border-radius: 6px;
+  border: 2px solid var(--bg-base);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--hairline-strong);
+}
+
+/* =========================================================================
+   Motion primitives
+   ========================================================================= */
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.92); }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 var(--critical-rule); }
+  100% { box-shadow: 0 0 0 8px transparent; }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =========================================================================
+   Focus ring — visible but not garish
+   ========================================================================= */
+
+:focus-visible {
+  outline: 1px solid var(--info);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
